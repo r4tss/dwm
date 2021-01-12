@@ -817,7 +817,7 @@ drawbar(Monitor *m)
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
-	drw_rect(drw, 0, 0, m->ww - x, bh, 1, 1);
+	drw_rect(drw, 0, 0, m->ww - x * 1.2, bh, 1, 1); //
 
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		rstext = strdup(stext);
