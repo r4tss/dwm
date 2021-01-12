@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;	/* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 0;       /* horiz inner gap between windows */
@@ -25,7 +25,7 @@ static const char col_acc[]	    = "#bd93f9";
 static const char col_white[]	    = "#ffffff";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_white, col_gray5, col_white },
+	[SchemeNorm] = { col_white, col_gray5, col_gray5 },
 	[SchemeSel]  = { col_white, col_acc,   col_acc   },
 };
 
@@ -87,16 +87,16 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_n,		spawn,		SHCMD("lutris") },
 	{ MODKEY,			XK_Insert,	spawn,		SHCMD("sn") },
 	{ MODKEY,			XK_End,		spawn,		SHCMD("xsecurelock") },
-	{ MODKEY,			XK_F5,		spawn,		SHCMD("mpc clear") },
-	{ MODKEY,			XK_F6,		spawn,		SHCMD("mpc prev") },
-	{ MODKEY,			XK_F7,		spawn,		SHCMD("mpc toggle") },
-	{ MODKEY,			XK_F8,		spawn,		SHCMD("mpc next") },
-	{ MODKEY,			XK_F10,		spawn,		SHCMD("pactl set-sink-volume 0 -5%") },
-	{ MODKEY,			XK_F11,		spawn,		SHCMD("pactl set-sink-volume 0 +5%") },
+	{ MODKEY,			XK_F5,		spawn,		SHCMD("$HOME/scripts/musicBlock.sh set clear") },
+	{ MODKEY,			XK_F6,		spawn,		SHCMD("$HOME/scripts/musicBlock.sh set prev") },
+	{ MODKEY,			XK_F7,		spawn,		SHCMD("$HOME/scripts/musicBlock.sh set toggle") },
+	{ MODKEY,			XK_F8,		spawn,		SHCMD("$HOME/scripts/musicBlock.sh set next") },
+	{ MODKEY,			XK_F10,		spawn,		SHCMD("$HOME/scripts/cVolume.sh down") },
+	{ MODKEY,			XK_F11,		spawn,		SHCMD("$HOME/scripts/cVolume.sh up") },
 	{ MODKEY|ShiftMask,		XK_F10,		spawn,		SHCMD("mpc volume -5") },
 	{ MODKEY|ShiftMask,		XK_F11,		spawn,		SHCMD("mpc volume +5") },
-	{ MODKEY|ShiftMask,		XK_p,		spawn,		SHCMD("bash $HOME/scripts/setlayout.sh") },
-	{ MODKEY,			XK_m,		spawn,		SHCMD("bash $HOME/scripts/dmenumpd.sh") },
+	{ MODKEY|ShiftMask,		XK_p,		spawn,		SHCMD("$HOME/scripts/setlayout.sh") },
+	{ MODKEY,			XK_m,		spawn,		SHCMD("$HOME/scripts/dmenumpd.sh") },
 	{ MODKEY|ShiftMask|ControlMask, XK_b,      	togglebar,     	{0}},
 	{ MODKEY,			XK_j,	   	focusstack,	{.i = +1 } },
 	{ MODKEY,			XK_k,	   	focusstack,	{.i = -1 } },
