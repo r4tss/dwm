@@ -13,7 +13,7 @@ static const char *splitdelim	    = ";";
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Cozette:size=12", "Siji:size=10" };
+static const char *fonts[]          = { "Cozette:size=12", "Siji:size=8" };
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -29,23 +29,26 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "\ue00e", "\ue1a0", "\ue1ec", "\ue1e5", "\ue19f" };
+static const char *tags[] = { "\ue0c6", "\ue1a0", "\ue1ec", "\ue1e5", "\ue1d1" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-
-	       /* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-		{ "lightcord",	NULL,	NULL,		1 << 4,		0,	0,		1,	-1},
-		{ "discord",	NULL,	NULL,		1 << 4,		0,	0,		1,	-1},
-		{ "surf",	NULL,	NULL,		1 << 1,		0,	0,		1,	-1},
-		{ "LibreWolf",	NULL,	NULL,		1 << 1,		0,	0,		1,	-1},
-		{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-		{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-		{ "st",      NULL,     NULL,           1 << 2,    0,          1,           0,        -1 },
-		{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+		// Center for 3440x1440 is 1720x720
+	       /* class     	instance  	title           tags mask	isfloating	isterminal	noswallow	monitor	floatborderpx	float x,y,w,h			scratchkey */
+		{ "lightcord",	NULL,		NULL,		0,		1,		0,		1,		-1,	1,		0,720-500,969,1000,		'l'},
+		{ "surf",	NULL,		NULL,		1 << 0,		0,		0,		1,		-1,	1,		0,0,0,1,			0 },
+		{ "LibreWolf",	NULL,		NULL,		1 << 1,		0,		0,		1,		-1,	1,		0,0,0,1,			0 },
+		{ "Steam",	NULL,		"Steam",	0,		1,		0,		1,		-1,	1,		1720-750,720-375,1500,750,	'S'},
+		{ "st",      	NULL,     	"st",           1 << 2,    	0,          	1,		0,		-1,	1,		0,0,0,1,			0 },
+		{ "Microsoft Teams - Preview", NULL, NULL,	0,		1,		0,		1,		-1,	1,		0,0,1000,1000,			0 },
+		{ "st",		NULL,		"ncmpcpp",	0,		1,		1,		0,		-1,	1,		1720-500,0,1000,500,		'n'},
+		{ "st",		NULL,		"pad",		0,		1,		1,		0,		-1,	1,		1720-750,720-375,1500,750,	's'},
+		{ "st",		NULL,		"cal",		0,		1,		1,		0,		-1,	1,		3440-970,720-500,969,1000,	'c'},
+		{ "st",		NULL,		"welc",		0,		1,		1,		0,		-1,	1,		1720-250,720-375,500,750,	'w'},
+		{ NULL,      	NULL,     	"Event Tester", 0,         	0,          	0,		1,		-1,	0,		0,0,0,1,			0 }, /* xev */
 };
 
 /* layout(s) */
@@ -53,13 +56,15 @@ static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
+#include "gaplessgrid.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
-	{ "|M|",      centeredmaster },
-	{ ">M>",      centeredfloatingmaster },
+	{ "###",	gaplessgrid },
+	{ "[]=",	tile },    /* first entry is default */
+	{ "><>",	NULL },    /* no layout function means floating behavior */
+	{ "[M]",	monocle },
+	{ "|M|",	centeredmaster },
+	{ ">M>",	centeredfloatingmaster },
 };
 
 /* key definitions */
@@ -77,33 +82,40 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-i", "-p", "Select an application to run", "-m", dmenumon, "-nb", col_gray5, "-nf", col_white, "-sb", col_acc, "-sf", col_gray5, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g" "150x40", NULL };
+static const char *cal[] = {"c", "st", "-t", "cal", "-e", "calcurse", NULL};
+static const char *pad[] = {"s", "st", "-t", "pad", NULL};
+static const char *ncmpcpp[] = {"n", "st", "-t", "ncmpcpp", "-e", "ncmpcpp", "-s", "clock", NULL};
+static const char *cord[] = {"l", "lightcord", NULL};
+static const char *Steam[] = {"S", "steam", NULL};
 
 static Key keys[] = {
 	/* modifier                     key       	function        	argument */
 	{ MODKEY,                       XK_p,		spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, 	spawn,          {.v = termcmd } },
-	{ MODKEY,			XK_grave,	togglescratch,	{.v = scratchpadcmd } },
+	{ MODKEY,			XK_grave,	togglescratch,	{.v = pad } },
+	{ MODKEY|ShiftMask,		XK_m,		togglescratch,	{.v = ncmpcpp } },
+	{ MODKEY,			XK_c,		togglescratch,	{.v = cal } },
+	{ MODKEY,			XK_t,		togglescratch,	{.v = cord } },
+	{ MODKEY,			XK_n,		togglescratch,	{.v = Steam } },
 	{ MODKEY|ShiftMask,		XK_s,	   	spawn,	   	SHCMD("maim -su | xclip -selection clipboard -t image/png -i") },
 	{ MODKEY,			XK_b,	   	spawn,	   	SHCMD("librewolf") },
-	{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("lightcord") },
-	{ MODKEY,			XK_n,		spawn,		SHCMD("st -e ncmpcpp") },
+	//{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("lightcord") },
+	//{ MODKEY,			XK_n,		spawn,		SHCMD("steam") },
 	{ MODKEY|ShiftMask,		XK_n,		spawn,		SHCMD("lutris") },
 	{ MODKEY,			XK_Insert,	spawn,		SHCMD("sn") },
 	{ MODKEY,			XK_End,		spawn,		SHCMD("xsecurelock") },
-	{ MODKEY,			XK_F5,		spawn,		SHCMD("$HOME/.scripts/musicBlock.sh set clear") },
-	{ MODKEY,			XK_F6,		spawn,		SHCMD("$HOME/.scripts/musicBlock.sh set prev") },
-	{ MODKEY,			XK_F7,		spawn,		SHCMD("$HOME/.scripts/musicBlock.sh set toggle") },
-	{ MODKEY,			XK_F8,		spawn,		SHCMD("$HOME/.scripts/musicBlock.sh set next") },
-	{ MODKEY,			XK_F10,		spawn,		SHCMD("$HOME/.scripts/cVolume.sh down") },
-	{ MODKEY,			XK_F11,		spawn,		SHCMD("$HOME/.scripts/cVolume.sh up") },
-	{ MODKEY|ShiftMask,		XK_F10,		spawn,		SHCMD("$HOME/.scripts/cVolume.sh mpcD") },
-	{ MODKEY|ShiftMask,		XK_F11,		spawn,		SHCMD("$HOME/.scripts/cVolume.sh mpcU") },
-	{ MODKEY|ShiftMask,		XK_p,		spawn,		SHCMD("$HOME/.scripts/setlayout.sh") },
-	{ MODKEY,			XK_m,		spawn,		SHCMD("$HOME/.scripts/dmenumpd.sh") },
-	{ MODKEY|ShiftMask,		XK_Up,		spawn,		SHCMD("$HOME/.scripts/timer.sh reset") },
-	{ MODKEY,			XK_equal,	spawn,		SHCMD("$HOME/.scripts/alarm.sh") },
+	{ MODKEY,			XK_F5,		spawn,		SHCMD("$S/musicBlock.sh set clear") },
+	{ MODKEY,			XK_F6,		spawn,		SHCMD("$S/musicBlock.sh set prev") },
+	{ MODKEY,			XK_F7,		spawn,		SHCMD("$S/musicBlock.sh set toggle") },
+	{ MODKEY,			XK_F8,		spawn,		SHCMD("$S/musicBlock.sh set next") },
+	{ MODKEY,			XK_F10,		spawn,		SHCMD("$S/cVolume.sh down") },
+	{ MODKEY,			XK_F11,		spawn,		SHCMD("$S/cVolume.sh up") },
+	{ MODKEY|ShiftMask,		XK_F10,		spawn,		SHCMD("$S/cVolume.sh mpcD") },
+	{ MODKEY|ShiftMask,		XK_F11,		spawn,		SHCMD("$S/cVolume.sh mpcU") },
+	{ MODKEY|ShiftMask,		XK_p,		spawn,		SHCMD("$S/setlayout.sh") },
+	{ MODKEY,			XK_m,		spawn,		SHCMD("$S/dmenumpd.sh") },
+	{ MODKEY|ShiftMask,		XK_Up,		spawn,		SHCMD("$S/timer.sh reset") },
+	{ MODKEY,			XK_equal,	spawn,		SHCMD("$S/alarm.sh") },
 	{ MODKEY|ShiftMask|ControlMask, XK_b,      	togglebar,     	{0}},
 	{ MODKEY,			XK_j,	   	focusstack,	{.i = +1 } },
 	{ MODKEY,			XK_k,	   	focusstack,	{.i = -1 } },
@@ -122,12 +134,13 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, 	zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    	view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      	killclient,     {0} },
-	{ MODKEY,                       XK_t,      	setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_y,      	setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_u,      	setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_u,      	setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_i,      	setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_o,      	setlayout,      {.v = &layouts[4]} },
-	{ MODKEY,                       XK_space,  	setlayout,      {0} },
+	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,		XK_o,		setlayout,	{.v = &layouts[5]} },
+	//{ MODKEY,                       XK_space,  	setlayout,      {0} },
 	{ MODKEY,			XK_w,		togglefloating, {0} },
 	{ MODKEY,                       XK_0,      	view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      	tag,            {.ui = ~0 } },
@@ -140,10 +153,10 @@ static Key keys[] = {
 	TAGKEYS(                        XK_3,      	                2)
 	TAGKEYS(                        XK_4,      	                3)
 	TAGKEYS(                        XK_5,      	                4)
-	TAGKEYS(                        XK_6,      	                5)
-	TAGKEYS(                        XK_7,      	                6)
-	TAGKEYS(                        XK_8,      	                7)
-	TAGKEYS(                        XK_9,      	                8)
+//	TAGKEYS(                        XK_6,      	                5)
+//	TAGKEYS(                        XK_7,      	                6)
+//	TAGKEYS(                        XK_8,      	                7)
+//	TAGKEYS(                        XK_9,      	                8)
 	{ MODKEY|ShiftMask,             XK_Delete, 	quit,           {1} },
 	{ MODKEY|ControlMask|ShiftMask, XK_Delete, 	quit,           {0} }, 
 };
