@@ -38,16 +38,16 @@ static const Rule rules[] = {
 	 */
 		// Center for 3440x1440 is 1720x720
 	       /* class     	instance  	title           tags mask	isfloating	isterminal	noswallow	monitor	floatborderpx	float x,y,w,h			scratchkey */
-		{ "lightcord",	NULL,		NULL,		0,		1,		0,		1,		-1,	1,		0,720-500,969,1000,		'l'},
+		{ "lightcord",	NULL,		NULL,		0,		1,		0,		1,		-1,	1,		0,H/4,W/3,H/2,		'l'},
 		{ "surf",	NULL,		NULL,		1 << 0,		0,		0,		1,		-1,	1,		0,0,0,1,			0 },
 		{ "LibreWolf",	NULL,		NULL,		1 << 1,		0,		0,		1,		-1,	1,		0,0,0,1,			0 },
 		{ "Steam",	NULL,		"Steam",	0,		1,		0,		1,		-1,	1,		1720-750,720-375,1500,750,	'S'},
 		{ "st",      	NULL,     	"st",           1 << 2,    	0,          	1,		0,		-1,	1,		0,0,0,1,			0 },
 		{ "Microsoft Teams - Preview", NULL, NULL,	0,		1,		0,		1,		-1,	1,		0,0,1000,1000,			0 },
-		{ "st",		NULL,		"ncmpcpp",	0,		1,		1,		0,		-1,	1,		1720-500,0,1000,500,		'n'},
-		{ "st",		NULL,		"pad",		0,		1,		1,		0,		-1,	1,		1720-750,720-375,1500,750,	's'},
-		{ "st",		NULL,		"cal",		0,		1,		1,		0,		-1,	1,		3440-970,720-500,969,1000,	'c'},
-		{ "st",		NULL,		"welc",		0,		1,		1,		0,		-1,	1,		1720-250,720-375,500,750,	'w'},
+		{ "st",		NULL,		"ncmpcpp",	0,		1,		1,		0,		-1,	1,		W/3,0,W/3,H/4-23,		'n'},
+		{ "st",		NULL,		"pad",		0,		1,		1,		0,		-1,	1,		W/3,H/4,W/3,H/2,		's'},
+		{ "st",		NULL,		"cal",		0,		1,		1,		0,		-1,	1,		2*W/3,H/4,W/3-1,H/2,		'c'},
+		{ "st",		NULL,		"welc",		0,		1,		1,		0,		-1,	1,		W/3,H/4,W/3,H/2,		'w'},
 		{ NULL,      	NULL,     	"Event Tester", 0,         	0,          	0,		1,		-1,	0,		0,0,0,1,			0 }, /* xev */
 };
 
