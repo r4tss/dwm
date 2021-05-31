@@ -13,7 +13,7 @@ static const char *splitdelim	    = ";";
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Cozette:size=12", "Siji:size=8" };
+static const char *fonts[]          = { "Cherry:size=12", "Siji:size=8" };
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -29,7 +29,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "\ue0c6", "\ue1a0", "\ue1ec", "\ue1e5", "\ue1d1" };
+static const char *tags[] = {"[G]", "[W]", "[T]", "[W]", "[M]"}; //{ "\ue0c6", "\ue1a0", "\ue1ec", "\ue1e5", "\ue1d1" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -38,10 +38,10 @@ static const Rule rules[] = {
 	 */
 		// Center for 3440x1440 is 1720x720
 	       /* class     	instance  	title           tags mask	isfloating	isterminal	noswallow	monitor	floatborderpx	float x,y,w,h			scratchkey */
-		{ "lightcord",	NULL,		NULL,		0,		1,		0,		1,		-1,	1,		0,H/4,W/3,H/2,		'l'},
+		{ "lightcord",	NULL,		NULL,		0,		1,		0,		1,		-1,	1,		0,H/4,W/3,H/2,			'l'},
 		{ "surf",	NULL,		NULL,		1 << 0,		0,		0,		1,		-1,	1,		0,0,0,1,			0 },
 		{ "LibreWolf",	NULL,		NULL,		1 << 1,		0,		0,		1,		-1,	1,		0,0,0,1,			0 },
-		{ "Steam",	NULL,		"Steam",	0,		1,		0,		1,		-1,	1,		1720-750,720-375,1500,750,	'S'},
+		{ "Steam",	NULL,		"Steam",	0,		1,		0,		1,		-1,	1,		W/3,H/4,W/3,H/2,		'S'},
 		{ "st",      	NULL,     	"st",           1 << 2,    	0,          	1,		0,		-1,	1,		0,0,0,1,			0 },
 		{ "Microsoft Teams - Preview", NULL, NULL,	0,		1,		0,		1,		-1,	1,		0,0,1000,1000,			0 },
 		{ "st",		NULL,		"ncmpcpp",	0,		1,		1,		0,		-1,	1,		W/3,0,W/3,H/4-23,		'n'},
@@ -104,14 +104,14 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_n,		spawn,		SHCMD("lutris") },
 	{ MODKEY,			XK_Insert,	spawn,		SHCMD("sn") },
 	{ MODKEY,			XK_End,		spawn,		SHCMD("xsecurelock") },
-	{ MODKEY,			XK_F5,		spawn,		SHCMD("$S/musicBlock.sh set clear") },
-	{ MODKEY,			XK_F6,		spawn,		SHCMD("$S/musicBlock.sh set prev") },
-	{ MODKEY,			XK_F7,		spawn,		SHCMD("$S/musicBlock.sh set toggle") },
-	{ MODKEY,			XK_F8,		spawn,		SHCMD("$S/musicBlock.sh set next") },
-	{ MODKEY,			XK_F10,		spawn,		SHCMD("$S/cVolume.sh down") },
-	{ MODKEY,			XK_F11,		spawn,		SHCMD("$S/cVolume.sh up") },
-	{ MODKEY|ShiftMask,		XK_F10,		spawn,		SHCMD("$S/cVolume.sh mpcD") },
-	{ MODKEY|ShiftMask,		XK_F11,		spawn,		SHCMD("$S/cVolume.sh mpcU") },
+	{ ShiftMask,			XF86XK_AudioPlay,spawn,		SHCMD("$S/musicBlock.sh set clear") },
+	{ 0,				XF86XK_AudioPrev,spawn,		SHCMD("$S/musicBlock.sh set prev") },
+	{ 0,				XF86XK_AudioPlay,spawn,		SHCMD("$S/musicBlock.sh set toggle") },
+	{ 0,				XF86XK_AudioNext,spawn,		SHCMD("$S/musicBlock.sh set next") },
+	{ 0,				XF86XK_AudioLowerVolume,spawn,	SHCMD("$S/cVolume.sh down") },
+	{ 0,				XF86XK_AudioRaiseVolume,spawn,	SHCMD("$S/cVolume.sh up") },
+	{ ShiftMask,			XF86XK_AudioLowerVolume,spawn,	SHCMD("$S/cVolume.sh mpcD") },
+	{ ShiftMask,			XF86XK_AudioRaiseVolume,spawn,	SHCMD("$S/cVolume.sh mpcU") },
 	{ MODKEY|ShiftMask,		XK_p,		spawn,		SHCMD("$S/setlayout.sh") },
 	{ MODKEY,			XK_m,		spawn,		SHCMD("$S/dmenumpd.sh") },
 	{ MODKEY|ShiftMask,		XK_Up,		spawn,		SHCMD("$S/timer.sh reset") },
